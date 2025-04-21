@@ -96,7 +96,6 @@ export class RealtimeTranscriptionClient extends RealtimeEventHandler {
   async connect({
     session,
   }: {
-    model: string;
     session: RealTimeTranscriptionSession;
   }) {
     if (this.isConnected()) {

@@ -5,12 +5,10 @@ import type { RealTimeTranscriptionSession } from "../types/RealTimeTranscriptio
 
 export const useTranscriptionClient = ({
   apiKey,
-  model,
   session,
   debug,
 }: {
   apiKey: string;
-  model: string;
   session: RealTimeTranscriptionSession;
   debug: boolean;
 }) => {
@@ -19,14 +17,14 @@ export const useTranscriptionClient = ({
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["transcriptionClient", apiKey, model, debug, session],
+    queryKey: ["transcriptionClient", apiKey, debug, session],
     queryFn: async () => {
       const _transcriptionClient = new RealtimeTranscriptionClient({
         apiKey,
         debug,
         url: "wss://api.openai.com/v1/realtime?intent=transcription",
       });
-      await _transcriptionClient.connect({ model, session });
+      await _transcriptionClient.connect({ session });
       return _transcriptionClient;
     },
     retry: false,

@@ -15,7 +15,6 @@ const App = ({ debug }: { debug: boolean }) => {
   } = useTranscriptionClient({
     apiKey: process.env.OPENAI_API_KEY ?? "",
     debug,
-    model: "gpt-4o-mini-transcribe",
     session: {
       input_audio_format: "pcm16",
       input_audio_noise_reduction: { type: "near_field" },
