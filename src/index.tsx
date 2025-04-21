@@ -4,8 +4,11 @@ import { render, Text } from "ink";
 import mic from "mic-ts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useTranscriptionClient } from "./hooks/useTranscriptionClient.js";
+import OpenAI from "openai";
 
 const queryClient = new QueryClient();
+
+const openai = new OpenAI();
 
 const App = ({ debug, clear }: { debug: boolean; clear: () => void }) => {
   const {
@@ -19,9 +22,9 @@ const App = ({ debug, clear }: { debug: boolean; clear: () => void }) => {
       input_audio_format: "pcm16",
       input_audio_noise_reduction: { type: "near_field" },
       input_audio_transcription: {
-        language: "en",
+        language: "fi",
         model: "gpt-4o-mini-transcribe",
-        prompt: "expect words related to technology",
+        prompt: "",
       },
       turn_detection: {
         type: "server_vad",
@@ -57,9 +60,46 @@ const App = ({ debug, clear }: { debug: boolean; clear: () => void }) => {
 
       micInstance.start();
 
-      transcriptionClient.onAllServerEvents((event) => {
-        if (debug) {
-          console.log(event);
+      transcriptionClient.onTranscriptionCompleted(async (event) => {
+        const stream = await openai.chat.completions.create({
+          model: "gpt-4.1-nano-2025-04-14",
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are a translation assistant. Translate Finnish text to English as accurately and quickly as possible.",
+            },
+            { role: "user", content: event.transcript },
+          ],
+          stream: true,
+        });
+
+        let translated = "";
+        for await (const { choices } of stream) {
+          const choice = choices[0];
+          if (choice?.delta?.content) {
+            translated = translated + choice?.delta?.content;
+          }
+
+          if (choice?.finish_reason === "stop") {
+            console.log("original:", event.transcript);
+            console.log("translated:", translated);
+            break;
+          }
+        }
+      });
+
+      let delta = "";
+      transcriptionClient.onDelta((event) => {
+        console.log({ delta: event.delta });
+        if (
+          event.delta.endsWith(".") ||
+          event.delta.endsWith("?") ||
+          event.delta.endsWith("!")
+        ) {
+          delta = "";
+        } else {
+          delta = delta + event.delta;
         }
       });
 
