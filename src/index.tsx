@@ -7,7 +7,7 @@ import { useTranscriptionClient } from "./hooks/useTranscriptionClient.js";
 
 const queryClient = new QueryClient();
 
-const App = ({ debug }: { debug: boolean }) => {
+const App = ({ debug, clear }: { debug: boolean; clear: () => void }) => {
   const {
     transcriptionClient,
     isLoading: isLoadingTranscriptionClient,
@@ -65,9 +65,12 @@ const App = ({ debug }: { debug: boolean }) => {
 
       // Handle Ctrl+C (SIGINT)
       const handleExit = () => {
-        transcriptionClient.disconnect();
-        micInstance.stop();
-        process.exit();
+        try {
+          transcriptionClient.disconnect();
+          micInstance.stop();
+        } finally {
+          clear();
+        }
       };
 
       process.on("SIGINT", handleExit);
@@ -77,7 +80,7 @@ const App = ({ debug }: { debug: boolean }) => {
         process.off("SIGINT", handleExit);
       };
     }
-  }, [debug, transcriptionClient]);
+  }, [debug, transcriptionClient, clear]);
 
   if (!process.env.OPENAI_API_KEY) {
     return <Text color="red">{"no OPENAI_API_KEY found"}</Text>;
@@ -102,8 +105,8 @@ const App = ({ debug }: { debug: boolean }) => {
   return <Text>Listening for audio... Please speak into the microphone.</Text>;
 };
 
-render(
+const { clear } = render(
   <QueryClientProvider client={queryClient}>
-    <App debug={true} />
-  </QueryClientProvider>,
+    <App debug={false} clear={() => clear()} />
+  </QueryClientProvider>
 );
