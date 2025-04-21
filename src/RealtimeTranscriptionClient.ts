@@ -41,7 +41,7 @@ export class RealtimeTranscriptionClient extends RealtimeEventHandler {
     audio_start_ms: number;
   }) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.realtime.on("input_audio_buffer.speech_started", callback as any);
+    this.realtime.on("server.input_audio_buffer.speech_started", callback as any);
   }
 
   onSpeechStopped(callback: {
@@ -51,7 +51,7 @@ export class RealtimeTranscriptionClient extends RealtimeEventHandler {
     audio_end_ms: number;
   }) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.realtime.on("input_audio_buffer.speech_stopped", callback as any);
+    this.realtime.on("server.input_audio_buffer.speech_stopped", callback as any);
   }
 
   onDelta(
@@ -80,7 +80,7 @@ export class RealtimeTranscriptionClient extends RealtimeEventHandler {
     }) => void,
   ) {
     this.realtime.on(
-      "conversation.item.input_audio_transcription.completed",
+      "server.conversation.item.input_audio_transcription.completed",
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback as any,
     );
