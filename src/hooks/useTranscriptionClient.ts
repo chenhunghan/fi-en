@@ -38,5 +38,9 @@ export const useTranscriptionClient = ({
     };
   }, [transcriptionClient]);
 
-  return { transcriptionClient, isLoading, error };
+  return {
+    transcriptionClient,
+    isLoading,
+    error,
+  };
 };

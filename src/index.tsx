@@ -108,5 +108,5 @@ const App = ({ debug, clear }: { debug: boolean; clear: () => void }) => {
 const { clear } = render(
   <QueryClientProvider client={queryClient}>
     <App debug={false} clear={() => clear()} />
-  </QueryClientProvider>
+  </QueryClientProvider>,
 );
