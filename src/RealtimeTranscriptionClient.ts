@@ -93,11 +93,7 @@ export class RealtimeTranscriptionClient extends RealtimeEventHandler {
   /**
    * Connect and set init session config
    */
-  async connect({
-    session,
-  }: {
-    session: RealTimeTranscriptionSession;
-  }) {
+  async connect({ session }: { session: RealTimeTranscriptionSession }) {
     if (this.isConnected()) {
       throw new Error(`Already connected, use .disconnect() first`);
     }
