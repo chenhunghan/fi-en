@@ -80,6 +80,10 @@ const App = ({ debug }: { debug: boolean }) => {
     }
   }, [debug, transcriptionClient]);
 
+  if (!process.env.OPENAI_API_KEY) {
+    return <Text color="red">{"no OPENAI_API_KEY found"}</Text>;
+  }
+
   if (isLoadingTranscriptionClient) {
     return <Text color="gree">Connecting...</Text>;
   }
