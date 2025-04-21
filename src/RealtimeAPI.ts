@@ -144,7 +144,7 @@ export class RealtimeAPI extends RealtimeEventHandler {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   send(eventName: string, data: { [key: string]: any }): boolean {
     if (!this.isConnected()) {
-      throw new Error(`RealtimeAPI is not connected`);
+      this.log(`RealtimeAPI is not connected, failed to send ${eventName}`);
     }
     data = data || {};
     if (typeof data !== "object") {
