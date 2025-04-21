@@ -1,0 +1,47 @@
+{
+  "name": "fi-en",
+  "version": "0.0.1",
+  "description": "",
+  "homepage": "https://github.com/chenhunghan/fi-en#readme",
+  "bugs": {
+    "url": "https://github.com/chenhunghan/fi-en/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenhunghan/fi-en.git"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Hung-Han Chen",
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "start": "tsx src/index.tsx",
+    "build": "rm -rf dist && tsc -p .",
+    "test": "npm run test:types && npm run test:lint && npm run test:format",
+    "test:format": "prettier --write -c .",
+    "test:lint": "eslint .",
+    "test:types": "tsc -p . --noEmit"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@tanstack/eslint-plugin-query": "^5.73.3",
+    "@types/node": "^22.14.1",
+    "@types/react": "^19.1.2",
+    "@types/ws": "^8.18.1",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "prettier": "^3.5.3",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.30.1"
+  },
+  "dependencies": {
+    "@openai/realtime-api-beta": "github:openai/openai-realtime-api-beta",
+    "@tanstack/react-query": "^5.74.4",
+    "ink": "^5.2.0",
+    "mic-ts": "^0.1.3",
+    "react": "^18.3.1",
+    "ws": "^8.18.1"
+  }
+}
